@@ -15,7 +15,7 @@ RUN groupadd miuser
 RUN useradd miuser -g miuser -m -s /bin/bash
 RUN echo 'miuser ALL=(ALL:ALL) NOPASSWD:ALL' | (EDITOR='tee -a' visudo)
 RUN echo 'miuser:qwerty' | chpasswd
-RUN pip3 install jupyter jupyterlab==$JUPYTERLAB_VERSION --upgrade
+#RUN pip3 install jupyter jupyterlab==$JUPYTERLAB_VERSION --upgrade
 USER miuser
 
 # apt-get and system utilities
