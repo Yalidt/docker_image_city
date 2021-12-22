@@ -15,7 +15,7 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
 
 RUN apt-get update && apt-get install -y dos2unix
 
-COPY install_packages.R /install_packages.R
+#COPY install_packages.R /install_packages.R
 
 RUN dos2unix /install_packages.R \
  && Rscript /install_packages.R
