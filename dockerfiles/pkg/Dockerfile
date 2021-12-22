@@ -1,5 +1,5 @@
 #dummy line
-FROM python:3.8.3-buster
+FROM ubuntu:bionic
 
 ENV JUPYTERLAB_VERSION 3.0.0
 ENV LANG C.UTF-8
@@ -9,29 +9,8 @@ ENV DEB_PACKAGES="sudo nano less git python3-dev python3-pip python3-setuptools 
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
-# PYODBC DEPENDENCES
-RUN apt-get install -y tdsodbc unixodbc-dev
-RUN apt install unixodbc-bin -y
-RUN apt-get clean -y
-#ADD odbcinst.ini /etc/odbcinst.ini
+RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade pip
 
-# UPGRADE pip3
-RUN pip3 install --upgrade pip
-
-# DEPENDECES FOR DOWNLOAD ODBC DRIVER
-RUN apt-get install apt-transport-https 
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN apt-get update
-
-# INSTALL ODBC DRIVER
-RUN ACCEPT_EULA=Y apt-get install msodbcsql17 --assume-yes
-
-# CONFIGURE ENV FOR /bin/bash TO USE MSODBCSQL17
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile 
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc 
-
-#RUN git clone https://github.com/bdatae/cityexpress-fraud-detection.git
 
 RUN groupadd miuser
 RUN useradd miuser -g miuser -m -s /bin/bash
