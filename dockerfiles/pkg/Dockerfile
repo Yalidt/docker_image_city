@@ -31,7 +31,7 @@ RUN ACCEPT_EULA=Y apt-get install msodbcsql17 --assume-yes
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile 
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc 
 
-RUN git clone https://github.com/bdatae/cityexpress-fraud-detection.git
+#RUN git clone https://github.com/bdatae/cityexpress-fraud-detection.git
 
 RUN groupadd miuser
 RUN useradd miuser -g miuser -m -s /bin/bash
