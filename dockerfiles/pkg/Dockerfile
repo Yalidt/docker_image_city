@@ -1,5 +1,5 @@
 #dummy line
-FROM ubuntu:bionic
+FROM python:3.8.3-buster
 
 ENV JUPYTERLAB_VERSION 3.0.0
 ENV LANG C.UTF-8
