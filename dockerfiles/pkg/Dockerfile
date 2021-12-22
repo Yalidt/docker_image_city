@@ -9,43 +9,27 @@ ENV DEB_PACKAGES="sudo nano less git python3-dev python3-pip python3-setuptools 
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
-# apt-get and system utilities
-RUN apt-get update && apt-get install -y \
-    curl apt-utils apt-transport-https debconf-utils gcc build-essential g++-5\
-    && rm -rf /var/lib/apt/lists/*
+# PYODBC DEPENDENCES
+RUN apt-get install -y tdsodbc unixodbc-dev
+RUN apt install unixodbc-bin -y
+RUN apt-get clean -y
+ADD odbcinst.ini /etc/odbcinst.ini
 
-# adding custom MS repository
+# UPGRADE pip3
+RUN pip3 install --upgrade pip
+
+# DEPENDECES FOR DOWNLOAD ODBC DRIVER
+RUN apt-get install apt-transport-https 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN apt-get update
 
-# install libssl - required for sqlcmd to work on Ubuntu 18.04
-RUN apt-get update && apt-get install -y libssl1.0.0 libssl-dev
+# INSTALL ODBC DRIVER
+RUN ACCEPT_EULA=Y apt-get install msodbcsql17 --assume-yes
 
-# install SQL Server drivers
-RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev
-
-# install SQL Server tools
-RUN apt-get update && ACCEPT_EULA=Y apt-get install -y mssql-tools
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-RUN /bin/bash -c "source ~/.bashrc"
-
-# python libraries
-RUN apt-get update && apt-get install -y \
-    python-pip python-dev python-setuptools \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
-
-# install necessary locales
-RUN apt-get update && apt-get install -y locales \
-    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
-    && locale-gen
-RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade pip
-
-# install SQL Server Python SQL Server connector module - pyodbc
-RUN pip install pyodbc
-
-# install additional utilities
-RUN apt-get update && apt-get install gettext nano vim -y
+# CONFIGURE ENV FOR /bin/bash TO USE MSODBCSQL17
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile 
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc 
 
 RUN git clone https://github.com/bdatae/cityexpress-fraud-detection.git
 
