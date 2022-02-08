@@ -1,4 +1,4 @@
-FROM python:3.8.3-buster
+FROM ubuntu:bionic
 
 ENV JUPYTERLAB_VERSION 3.0.0
 ENV LANG C.UTF-8
@@ -10,7 +10,6 @@ ENV DEB_PACKAGES="sudo nano less git python3-dev python3-pip python3-setuptools 
 RUN apt-get install -y tdsodbc unixodbc-dev
 RUN apt install unixodbc-bin -y
 RUN apt-get clean -y
-ADD odbcinst.ini /etc/odbcinst.ini
 
 RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade pip
 
