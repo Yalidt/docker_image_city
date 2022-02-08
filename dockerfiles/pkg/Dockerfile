@@ -23,10 +23,16 @@ RUN apt-get update && ACCEPT_EULA=Y apt-get install -y mssql-tools
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
     
-RUN apt-get update -y && \
-  apt-get install python3-pip idle3 -y && \
-  pip3 install --no-cache-dir --upgrade pip && \
-    
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.5 \
+    python3-pip \
+    && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install nibabel pydicom matplotlib pillow
+RUN pip3 install med2image
+
 #RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
 RUN groupadd miuser
