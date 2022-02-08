@@ -1,4 +1,3 @@
-#dummy line
 FROM ubuntu:bionic
 
 ENV JUPYTERLAB_VERSION 3.0.0
@@ -21,7 +20,7 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
 RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade pip
-RUN pip install pyodbc
+RUN pip3 install pyodbc
 
 RUN groupadd miuser
 RUN useradd miuser -g miuser -m -s /bin/bash
