@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:16.04
 
 ENV JUPYTERLAB_VERSION 3.0.0
 ENV LANG C.UTF-8
@@ -6,26 +6,29 @@ ENV LC_ALL C.UTF-8
 
 ENV DEB_PACKAGES="sudo nano less git python3-dev python3-pip python3-setuptools nodejs"
 
-# PYODBC DEPENDENCES
-RUN apt-get install -y tdsodbc unixodbc-dev
-RUN apt install unixodbc-bin -y
-RUN apt-get clean -y
+# apt-get and system utilities
+RUN apt-get update && apt-get install -y \
+    curl apt-utils apt-transport-https debconf-utils gcc build-essential g++-5\
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade pip
-
-# DEPENDECES FOR DOWNLOAD ODBC DRIVER
-RUN apt-get install apt-transport-https 
+# adding custom MS repository
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN apt-get update
+RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
-# INSTALL ODBC DRIVER
-RUN ACCEPT_EULA=Y apt-get install msodbcsql17 --assume-yes
+# install SQL Server drivers
+RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev
 
-# CONFIGURE ENV FOR /bin/bash TO USE MSODBCSQL17
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile 
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc 
+# install SQL Server tools
+RUN apt-get update && ACCEPT_EULA=Y apt-get install -y mssql-tools
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+RUN /bin/bash -c "source ~/.bashrc"
 
+# python libraries
+RUN apt-get update && apt-get install -y \
+    python-pip python-dev python-setuptools \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+    
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
 RUN pip3 install pyodbc
