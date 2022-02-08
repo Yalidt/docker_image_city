@@ -27,8 +27,6 @@ RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade
     
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
-RUN pip3 install pyodbc
-
 RUN groupadd miuser
 RUN useradd miuser -g miuser -m -s /bin/bash
 RUN echo 'miuser ALL=(ALL:ALL) NOPASSWD:ALL' | (EDITOR='tee -a' visudo)
