@@ -22,12 +22,8 @@ RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev
 RUN apt-get update && ACCEPT_EULA=Y apt-get install -y mssql-tools
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
-
-# python libraries
-RUN apt-get update && apt-get install -y \
-    python3-pip3 python-dev python-setuptools \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+    
+RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade pip
     
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
