@@ -25,7 +25,7 @@ RUN /bin/bash -c "source ~/.bashrc"
 
 # python libraries
 RUN apt-get update && apt-get install -y \
-    python-pip python-dev python-setuptools \
+    python3-pip3 python-dev python-setuptools \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
     
