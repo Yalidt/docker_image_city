@@ -26,6 +26,7 @@ RUN curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt
 # install SQL Server drivers
 #RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev
 
+RUN apt-get update 
 RUN apt-get install -y unixodbc
 RUN apt-get install -y libudunits2-dev curl unixodbc-dev gnupg2 apt-transport-https ca-certificates
 RUN apt-get update
