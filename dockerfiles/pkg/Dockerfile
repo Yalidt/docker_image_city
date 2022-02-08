@@ -24,7 +24,13 @@ RUN curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt
 #curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
 
 # install SQL Server drivers
-RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev
+#RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev
+
+RUN apt-get install -y unixodbc
+RUN apt-get install -y libudunits2-dev curl unixodbc-dev gnupg2 apt-transport-https ca-certificates
+RUN apt-get update
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
+RUN ACCEPT_EULA=Y apt-get install -y mssql-tools
 
 # install SQL Server tools
 RUN apt-get update && ACCEPT_EULA=Y apt-get install -y mssql-tools
