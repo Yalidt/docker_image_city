@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:bionic
 
 ENV JUPYTERLAB_VERSION 3.0.0
 ENV LANG C.UTF-8
@@ -24,9 +24,7 @@ RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
 
 
-RUN apt-get update -y
-RUN apt-get install -y python3-pip python-dev build-essential
-    
+RUN apt-get update && apt-get install -y $DEB_PACKAGES && pip3 install --upgrade pip
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
 RUN groupadd miuser
