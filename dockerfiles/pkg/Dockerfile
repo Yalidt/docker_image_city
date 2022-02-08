@@ -27,7 +27,7 @@ RUN apt-get update -y && \
   apt-get install python3-pip idle3 -y && \
   pip3 install --no-cache-dir --upgrade pip && \
     
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
+#RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
 RUN groupadd miuser
 RUN useradd miuser -g miuser -m -s /bin/bash
