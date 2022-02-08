@@ -30,8 +30,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install nibabel pydicom matplotlib pillow
-RUN pip3 install med2image
+RUN pip install nibabel pydicom matplotlib pillow
+RUN pip install med2image
 
 #RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
