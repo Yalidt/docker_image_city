@@ -11,8 +11,8 @@ RUN apt-get update -y && apt-get update \
   && apt-get install -y --no-install-recommends curl gcc g++ gnupg unixodbc-dev apt-transport-https
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-  && curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list \
-  && sudo apt-get update  \
+  && curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list | tee /etc/apt/sources.list.d/msprod.list \
+  && apt-get update  \
   && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile \
   && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc source ~/.bashrc
 
