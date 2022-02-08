@@ -11,12 +11,12 @@ ENV ACCEPT_EULA=Y
 RUN apt-get update -y && apt-get update \
   && apt-get install -y --no-install-recommends curl gcc g++ gnupg unixodbc-dev
 
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-  && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends --allow-unauthenticated msodbcsql17 mssql-tools \
+RUN curl curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - \
+  && curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list \
+  && sudo apt-get update  \
+  && sudo apt-get install mssql-tools unixodbc-dev \
   && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile \
-  && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+  && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc source ~/.bashrc
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && echo "America/Mexico_City" > /etc/timezone && apt-get install -y tzdata
 
