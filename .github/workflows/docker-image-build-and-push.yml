@@ -8,7 +8,7 @@ on:
   push:
     branches: [ main ]
     paths:
-    - dockerfiles/pkg/Dockerfile #path in repo to Dockerfile
+    - Dockerfile #path in repo to Dockerfile
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -38,4 +38,4 @@ jobs:
           file: dockerfiles/pkg/Dockerfile #path in repo to Dockerfile
           platforms: linux/amd64
           push: true
-          tags: yalidt/city_fraud:0.1
+          tags: yalidt/api_city:0.1
